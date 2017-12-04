@@ -23,11 +23,24 @@ Generate at least ten transactions and write them to a file.
 # =====================================
 # Libraries
 # =====================================
+import random
 
+import string  # Used for alphabet generation
 
 # =====================================
 # Functions
 # =====================================
+
+
+def random_with_N_digits(n):
+    range_start = 10**(n - 1)
+    range_end = (10**n) - 1
+    return random.randint(range_start, range_end)
+
+
+def randomName(length):
+    characters = list(string.ascii_uppercase) + list(string.digits)
+    return ''.join(random.sample(characters, length))
 
 
 # =====================================
@@ -38,3 +51,6 @@ Generate at least ten transactions and write them to a file.
 # =====================================
 # Main
 # =====================================
+
+print random_with_N_digits(3)
+print randomName(10)
