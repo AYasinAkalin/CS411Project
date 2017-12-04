@@ -61,10 +61,41 @@ def randomInteger128bit():
     return x
 
 
+# Takes no parameter
+# Returns 'string'
+def generateSerialNum():
+    return 'Serial number: ' + str(randomInteger128bit())
+
+
+# Takes one 'int'
+# Returns 'string'
+def generatePayer(length):
+    # Usage
+    # print generatePayer(8)
+    return 'Payer: ' + randomName(length)
+
+
+# Takes one 'int'
+# Returns 'string'
+def generatePayee(length):
+    # Usage
+    # print generatePayee(5)
+    return 'Payee: ' + randomName(length)
+
+
+# Takes one 'int'
+# Returns 'string'
+def generateAmount(numOfDigits):
+    # Usage
+    # print generateAmount(3)
+    return 'Amount: ' + str(random_with_N_digits(numOfDigits)) + ' Satoshi'
+
+
 # =====================================
 # Initials
 # =====================================
 
+lengthID = 10
 
 # =====================================
 # Main
@@ -75,3 +106,8 @@ print randomName(10)
 
 randomInteger = randomInteger128bit()
 print randomInteger, len(str(randomInteger))
+
+print generateSerialNum()
+print generatePayer(lengthID)
+print generatePayee(lengthID)
+print generateAmount(3)
