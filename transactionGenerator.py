@@ -33,18 +33,30 @@ import uuid  # Used for 128 bit integer generation
 # =====================================
 
 
+# Takes one 'int'
+# Returns 'int'
 def random_with_N_digits(n):
+    # Usage
+    # threeDigitNumber = random_with_N_digits(3)
     range_start = 10**(n - 1)
     range_end = (10**n) - 1
     return random.randint(range_start, range_end)
 
 
+# Takes one 'int'
+# Returns 'string'
 def randomName(length):
+    # Usage
+    # name = randomName(10)
     characters = list(string.ascii_uppercase) + list(string.digits)
     return ''.join(random.sample(characters, length))
 
 
+# Takes no parameter
+# Returns 'long'
 def randomInteger128bit():
+    # Usage
+    # randomInteger = randomInteger128bit()
     x = uuid.uuid4().int
     return x
 
