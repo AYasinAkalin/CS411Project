@@ -93,8 +93,10 @@ def generateAmount(numOfDigits):
 
 # Takes ...
 # Returns 'string
+
+
 def findPrevHash():
-	pass
+    pass
 
 
 # Takes no parameter
@@ -106,7 +108,8 @@ def generateNonce():
 # Takes ...
 # Returns 'string
 def generatePoW():
-	pass
+    pass
+
 
 def generateTransaction(length, lengthAmount):
     header = '*** Bitcoin transaction ***'
@@ -125,24 +128,35 @@ def generateTransaction(length, lengthAmount):
 
     writeToFile(lines, 'trial.txt')
     pass
+
+
+def writeToFile(string, fileName):
+    # Open a file
+    fo = open(fileName, "a")
+    fo.write('\n')
+    # Fill the text into the file
+    fo.write(string)
+    # Close opend file
+    fo.close()
 # =====================================
 # Initials
 # =====================================
+
 
 lengthID = 10
 
 # =====================================
 # Main
 # =====================================
-
-print random_with_N_digits(3)
-print randomName(10)
-
-randomInteger = randomInteger128bit()
-print randomInteger, len(str(randomInteger))
-
+print '*** Bitcoin transaction ***'
 print generateSerialNum()
 print generatePayer(lengthID)
 print generatePayee(lengthID)
 print generateAmount(3)
 print generateNonce()
+
+writeToFile('Hi77', 'hi.txt')
+print '====='
+for x in xrange(1,10):
+    generateTransaction(lengthID, 3)
+
