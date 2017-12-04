@@ -28,6 +28,7 @@ import random
 import string  # Used for alphabet generation
 
 import uuid  # Used for 128 bit integer generation
+import os  # Used to check if a file is empty or not
 # =====================================
 # Functions
 # =====================================
@@ -107,6 +108,23 @@ def generateNonce():
 def generatePoW():
 	pass
 
+def generateTransaction(length, lengthAmount):
+    header = '*** Bitcoin transaction ***'
+    serial = generateSerialNum()
+    payer = generatePayer(length)
+    payee = generatePayee(length)
+    amount = generateAmount(lengthAmount)
+    hashPrev = ''
+    nonce = generateNonce()
+
+    lines = header + serial + payer + payee + amount + hashPrev + nonce
+    print lines
+    hashPOW = ''
+    # create file
+    #
+
+    writeToFile(lines, 'trial.txt')
+    pass
 # =====================================
 # Initials
 # =====================================
