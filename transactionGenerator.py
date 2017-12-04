@@ -121,7 +121,7 @@ def generateTransaction(length, lengthAmount):
     nonce = generateNonce()
 
     lines = header + serial + payer + payee + amount + hashPrev + nonce
-    print lines
+    #print lines
     hashPOW = ''
     # create file
     #
@@ -133,9 +133,9 @@ def generateTransaction(length, lengthAmount):
 def writeToFile(string, fileName):
     # Open a file
     fo = open(fileName, "a")
-    fo.write('\n')
     # Fill the text into the file
     fo.write(string)
+    fo.write('\n')
     # Close opend file
     fo.close()
 # =====================================
