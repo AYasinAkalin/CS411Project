@@ -90,11 +90,22 @@ def generateAmount(numOfDigits):
     # print generateAmount(3)
     return 'Amount: ' + str(random_with_N_digits(numOfDigits)) + ' Satoshi'
 
+# Takes ...
+# Returns 'string
+def findPrevHash():
+	pass
+
+
 # Takes no parameter
 # Returns 'string'
 def generateNonce():
     return 'Nonce: ' + str(randomInteger128bit())
 
+
+# Takes ...
+# Returns 'string
+def generatePoW():
+	pass
 
 # =====================================
 # Initials
