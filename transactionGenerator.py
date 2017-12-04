@@ -90,6 +90,11 @@ def generateAmount(numOfDigits):
     # print generateAmount(3)
     return 'Amount: ' + str(random_with_N_digits(numOfDigits)) + ' Satoshi'
 
+# Takes no parameter
+# Returns 'string'
+def generateNonce():
+    return 'Nonce: ' + str(randomInteger128bit())
+
 
 # =====================================
 # Initials
@@ -111,3 +116,4 @@ print generateSerialNum()
 print generatePayer(lengthID)
 print generatePayee(lengthID)
 print generateAmount(3)
+print generateNonce()
