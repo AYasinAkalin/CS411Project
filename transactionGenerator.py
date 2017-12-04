@@ -27,6 +27,7 @@ import random
 
 import string  # Used for alphabet generation
 
+import uuid  # Used for 128 bit integer generation
 # =====================================
 # Functions
 # =====================================
@@ -43,6 +44,11 @@ def randomName(length):
     return ''.join(random.sample(characters, length))
 
 
+def randomInteger128bit():
+    x = uuid.uuid4().int
+    return x
+
+
 # =====================================
 # Initials
 # =====================================
@@ -54,3 +60,6 @@ def randomName(length):
 
 print random_with_N_digits(3)
 print randomName(10)
+
+randomInteger = randomInteger128bit()
+print randomInteger, len(str(randomInteger))
