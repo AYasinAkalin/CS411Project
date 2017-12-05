@@ -97,12 +97,16 @@ def generateAmount(numOfDigits):
     # print generateAmount(3)
     return 'Amount: ' + str(random_with_N_digits(numOfDigits)) + ' Satoshi'
 
-# Takes ...
-# Returns 'string
 
-
-def findPrevHash():
-    pass
+# Takes an 'integer'
+# Returns 'string'
+def findPrevHash(numOfRun):
+    # Usage
+    # print findPrevHash(4)
+    if numOfRun is 0:
+        return 'Previous hash in the chain: First transaction'
+    else:
+        return 'Previous hash in the chain: ' + listHash[numOfRun - 1]
 
 
 # Takes no parameter
@@ -125,7 +129,7 @@ def generateTransaction(length, lengthAmount):
     payer = generatePayer(length)
     payee = generatePayee(length)
     amount = generateAmount(lengthAmount)
-    hashPrev = ''
+    hashPrev = findPrevHash(numOfRun)
     nonce = generateNonce()
 
     lines = header + serial + payer + payee + amount + hashPrev + nonce
@@ -135,6 +139,7 @@ def generateTransaction(length, lengthAmount):
         nonce = generateNonce()  # New nonce value
         lines = header + serial + payer + payee + amount + hashPrev + nonce
         hashPOW = generatePoW(lines)
+    listHash.append(hashPOW)  # Add current PoW to a list to found later
     # Debug
     print 'Final POW HASH: ', hashPOW
 
@@ -152,11 +157,12 @@ def writeToFile(string, fileName):
     fo.write('\n')
     # Close opend file
     fo.close()
+
+
 # =====================================
 # Initials
 # =====================================
-
-
+listHash = []
 lengthID = 10
 
 # =====================================
