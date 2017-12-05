@@ -123,30 +123,37 @@ def generatePoW(string):
     return hashlib.sha3_256(string).hexdigest()
 
 
-def generateTransaction(length, lengthAmount):
+# Takes three 'integers'. These are:
+# -- lenID is number of characters in the name of payer and payee
+# -- lenAmount is the number of digit of the amount of transaction
+# -- numOfRun is the number of this function running in a loop
+# Returns nothing
+def generateTransaction(lenID, lenAmount, numOfRun):
+    # Usage
+    # print generatePoW(12, 5, i)
+    fileName = 'output.txt'
+
     header = '*** Bitcoin transaction ***'
     serial = generateSerialNum()
-    payer = generatePayer(length)
-    payee = generatePayee(length)
-    amount = generateAmount(lengthAmount)
+    payer = generatePayer(lenID)
+    payee = generatePayee(lenID)
+    amount = generateAmount(lenAmount)
     hashPrev = findPrevHash(numOfRun)
     nonce = generateNonce()
 
     lines = header + serial + payer + payee + amount + hashPrev + nonce
-    # print lines
     hashPOW = generatePoW(lines)
     while not hashPOW.startswith('000000'):
         nonce = generateNonce()  # New nonce value
         lines = header + serial + payer + payee + amount + hashPrev + nonce
         hashPOW = generatePoW(lines)
     listHash.append(hashPOW)  # Add current PoW to a list to found later
-    # Debug
-    print 'Final POW HASH: ', hashPOW
 
-    # create file
-    lines += hashPOW
-    writeToFile(lines, 'trial.txt')
-    pass
+    # Create file and write transaction details on it
+    hashPOW = 'Proof of Work: ' + hashPOW
+    linesToFile = '\n'.join(
+        [header, serial, payer, payee, amount, hashPrev, nonce, hashPOW])
+    writeToFile(linesToFile, fileName)
 
 
 def writeToFile(string, fileName):
@@ -168,14 +175,9 @@ lengthID = 10
 # =====================================
 # Main
 # =====================================
-print '*** Bitcoin transaction ***'
-print generateSerialNum()
-print generatePayer(lengthID)
-print generatePayee(lengthID)
-print generateAmount(3)
-print generateNonce()
-
-writeToFile('Hi77', 'hi.txt')
-print '====='
-for x in xrange(1, 10):
-    generateTransaction(lengthID, 3)
+print 'Looking for proof of work hash value.'
+for x in xrange(0, 10):
+    generateTransaction(lengthID, 3, x)
+    print 'A PoW value found.', listHash[x]
+    print '=============================================='
+print '10 transactions are proven and connected.'
