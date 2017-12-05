@@ -29,6 +29,12 @@ import string  # Used for alphabet generation
 
 import uuid  # Used for 128 bit integer generation
 import os  # Used to check if a file is empty or not
+
+# Used to generate hash value
+import sys
+import hashlib
+if sys.version_info < (3, 6):
+    import sha3
 # =====================================
 # Functions
 # =====================================
@@ -105,10 +111,12 @@ def generateNonce():
     return 'Nonce: ' + str(randomInteger128bit())
 
 
-# Takes ...
+# Takes 'string'
 # Returns 'string
-def generatePoW():
-    pass
+def generatePoW(string):
+    # Usage
+    # print generatePoW('s;jdfh;lsdh'fjd;sljfh)
+    return hashlib.sha3_256(string).hexdigest()
 
 
 def generateTransaction(length, lengthAmount):
