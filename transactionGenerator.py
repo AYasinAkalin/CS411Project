@@ -129,11 +129,17 @@ def generateTransaction(length, lengthAmount):
     nonce = generateNonce()
 
     lines = header + serial + payer + payee + amount + hashPrev + nonce
-    #print lines
-    hashPOW = ''
-    # create file
-    #
+    # print lines
+    hashPOW = generatePoW(lines)
+    while not hashPOW.startswith('000000'):
+        nonce = generateNonce()  # New nonce value
+        lines = header + serial + payer + payee + amount + hashPrev + nonce
+        hashPOW = generatePoW(lines)
+    # Debug
+    print 'Final POW HASH: ', hashPOW
 
+    # create file
+    lines += hashPOW
     writeToFile(lines, 'trial.txt')
     pass
 
@@ -165,6 +171,5 @@ print generateNonce()
 
 writeToFile('Hi77', 'hi.txt')
 print '====='
-for x in xrange(1,10):
+for x in xrange(1, 10):
     generateTransaction(lengthID, 3)
-
