@@ -23,23 +23,20 @@ Generate at least ten transactions and write them to a file.
 # =====================================
 # Libraries
 # =====================================
-import random
-
+import random  # Used for random generators
 import string  # Used for alphabet generation
-
-import uuid  # Used for 128 bit integer generation
-import os  # Used to check if a file is empty or not
+import uuid    # Used for 128 bit integer generation
 
 # Used to generate hash value
 import sys
 import hashlib
 if sys.version_info < (3, 6):
     import sha3
+
+
 # =====================================
 # Functions
 # =====================================
-
-
 # Takes one 'int'
 # Returns 'int'
 def random_with_N_digits(n):
@@ -161,11 +158,11 @@ def generateTransaction(lenID, lenAmount, numOfRun):
 
 def writeToFile(string, fileName):
     # Open a file
-    fo = open(fileName, "a")
+    fo = open(fileName, "a")  # File opens in append mode
     # Fill the text into the file
     fo.write(string)
     fo.write('\n')
-    # Close opend file
+    # Close opened file
     fo.close()
 
 
@@ -178,9 +175,10 @@ lengthID = 10
 # =====================================
 # Main
 # =====================================
-print 'Looking for proof of work hash value.'
+print 'Looking for \'proof of work\' hash value.'
 for x in xrange(0, 10):
     generateTransaction(lengthID, 3, x)
-    print 'A PoW value found.', listHash[x]
+    print 'A PoW value has been found.', listHash[x]
+    print 'Looking for another one.'
     print '=============================================='
-print '10 transactions are proven and connected.'
+print '10 transactions has been proven and connected.'
