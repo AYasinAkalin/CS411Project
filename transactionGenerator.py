@@ -141,13 +141,16 @@ def generateTransaction(lenID, lenAmount, numOfRun):
     hashPrev = findPrevHash(numOfRun)
     nonce = generateNonce()
 
-    lines = header + serial + payer + payee + amount + hashPrev + nonce
+    lines = '\n'.join(
+        [header, serial, payer, payee, amount, hashPrev, nonce]) + '\n'
     hashPOW = generatePoW(lines)
     while not hashPOW.startswith('000000'):
         nonce = generateNonce()  # New nonce value
-        lines = header + serial + payer + payee + amount + hashPrev + nonce
+        lines = '\n'.join(
+            [header, serial, payer, payee, amount, hashPrev, nonce]) + '\n'
         hashPOW = generatePoW(lines)
-    listHash.append(hashPOW)  # Add current PoW to a list to found later
+    # Add current PoW to a list so it can be found later
+    listHash.append(hashPOW)
 
     # Create file and write transaction details on it
     hashPOW = 'Proof of Work: ' + hashPOW
