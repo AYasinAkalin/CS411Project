@@ -13,7 +13,7 @@
 '''
 In this phase of the project, you will generate random transactions following
 the format described.
-You are required to use SHA3 with 256-bit output
+It is required to use SHA3 with 256-bit output
 as the cryptographic hash function.
 
 Provide a PoW for a single transcation.
@@ -170,15 +170,18 @@ def writeToFile(string, fileName):
 # Initials
 # =====================================
 listHash = []
-lengthID = 10
+lengthID = 10  # Length of the names of payee and payer
+lenPaymentAmount = 3  # Number of digits of transaction amount
+numTransactions = 10  # Total number of transactions
 
 # =====================================
 # Main
 # =====================================
 print 'Looking for \'proof of work\' hash value.'
-for x in xrange(0, 10):
-    generateTransaction(lengthID, 3, x)
+for x in xrange(0, numTransactions):
+    generateTransaction(lengthID, lenPaymentAmount, x)
     print 'A PoW value has been found.', listHash[x]
-    print 'Looking for another one.'
     print '=============================================='
-print '10 transactions has been proven and connected.'
+    if x is not 9:
+        print 'Looking for another one.'
+print numTransactions, 'transactions has been proven and connected.'
