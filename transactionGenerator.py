@@ -170,16 +170,18 @@ def writeToFile(string, fileName):
 # Initials
 # =====================================
 listHash = []
-lengthID = 10
+lengthID = 10  # Length of the names of payee and payer
+lenPaymentAmount = 3  # Number of digits of transaction amount
+numTransactions = 10  # Total number of transactions
 
 # =====================================
 # Main
 # =====================================
 print 'Looking for \'proof of work\' hash value.'
-for x in xrange(0, 10):
-    generateTransaction(lengthID, 3, x)
+for x in xrange(0, numTransactions):
+    generateTransaction(lengthID, lenPaymentAmount, x)
     print 'A PoW value has been found.', listHash[x]
     print '=============================================='
     if x is not 9:
         print 'Looking for another one.'
-print '10 transactions has been proven and connected.'
+print numTransactions, 'transactions has been proven and connected.'
