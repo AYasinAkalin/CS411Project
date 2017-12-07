@@ -13,7 +13,7 @@
 '''
 In this phase of the project, you will generate random transactions following
 the format described.
-You are required to use SHA3 with 256-bit output
+It is required to use SHA3 with 256-bit output
 as the cryptographic hash function.
 
 Provide a PoW for a single transcation.
@@ -179,6 +179,7 @@ print 'Looking for \'proof of work\' hash value.'
 for x in xrange(0, 10):
     generateTransaction(lengthID, 3, x)
     print 'A PoW value has been found.', listHash[x]
-    print 'Looking for another one.'
     print '=============================================='
+    if x is not 9:
+        print 'Looking for another one.'
 print '10 transactions has been proven and connected.'
