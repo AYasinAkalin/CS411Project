@@ -38,6 +38,27 @@ import DSA
 # =====================================
 # Functions
 # =====================================
+def GenTxBlock (p, q, g, count):
+    # Generation phase
+    (alpha1, beta1) = DSA.KeyGen(p, q, g)  # Keys of payer
+    (alpha2, beta2) = DSA.KeyGen(p, q, g)  # Keys of payee
+    sign1 = DSA.SignGen(message, p, q, g, alpha1, beta1)  # Signature of payer
+    sign2 = DSA.SignGen(message, p, q, g, alpha2, beta2)  # Signature of payee
+
+    # Output string generation
+    header = '*** Bitcoin transaction ***'
+    serial = generateSerialNum()
+    p = 'p: ' + p
+    q = 'q: ' + q
+    g = 'g: ' + g
+    beta1 = 'Payer Public Key (beta): ' + beta1
+    beta2 = 'Payee Public Key (beta): ' + beta2
+    amount = generateAmount(lenAmount)
+    r = 'Signature (r): ' + sign1[0]  # Signature element of payer
+    s = 'Signature (s): ' + sign1[1]  # Signature element of payer
+    linesToBeWritten = '\n'.join(
+        [header, serial, p , q, g, beta1, beta2, amount, r, s]) + '\n'
+    return linesToBeWritten
 
 
 # =====================================
