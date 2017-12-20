@@ -112,8 +112,8 @@ def generate_g(p, q):
 # Takes no parameter
 # Returns 3 'long'
 def DL_Param_Generator(small_bound, large_bound):
-    q = q__ # generate_q(small_bound)
-    p = p__ # generate_p(large_bound, q)
+    q = generate_q(small_bound)
+    p = generate_p(large_bound, q)
     # g is a generator of a subgroup in Z*_p with q elements
     g = generate_g(p, q)
     return q, p, g
