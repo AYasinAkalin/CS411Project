@@ -34,11 +34,15 @@ Signature (s): 54222466157856912512740736834055670138544475519297459412760616 ..
 # Libraries
 # =====================================
 import DSA
+import os
+from library import transactionHelpers as tHelp
 
 # =====================================
 # Functions
 # =====================================
-def GenTxBlock (p, q, g, count):
+
+
+def GenTxBlockHelper(p, q, g, count):
     # Generation phase
     (alpha1, beta1) = DSA.KeyGen(p, q, g)  # Keys of payer
     (alpha2, beta2) = DSA.KeyGen(p, q, g)  # Keys of payee
@@ -47,33 +51,66 @@ def GenTxBlock (p, q, g, count):
 
     # Output string generation
     header = '*** Bitcoin transaction ***'
-    serial = generateSerialNum()
-    p = 'p: ' + p
-    q = 'q: ' + q
-    g = 'g: ' + g
-    beta1 = 'Payer Public Key (beta): ' + beta1
-    beta2 = 'Payee Public Key (beta): ' + beta2
-    amount = generateAmount(lenAmount)
-    r = 'Signature (r): ' + sign1[0]  # Signature element of payer
-    s = 'Signature (s): ' + sign1[1]  # Signature element of payer
+    serial = tHelp.generateSerialNum()
+    p_ = 'p: ' + str(p)
+    q_ = 'q: ' + str(q)
+    g_ = 'g: ' + str(g)
+    beta1 = 'Payer Public Key (beta): ' + str(beta1)
+    beta2 = 'Payee Public Key (beta): ' + str(beta2)
+    amount = tHelp.generateAmount(lenAmount)
+    r_ = 'Signature (r): ' + str(sign1[0])  # Signature element of payer
+    s_ = 'Signature (s): ' + str(sign1[1])  # Signature element of payer
     linesToBeWritten = '\n'.join(
-        [header, serial, p , q, g, beta1, beta2, amount, r, s]) + '\n'
+        [header, serial, p_, q_, g_, beta1, beta2, amount, r_, s_]) + '\n'
     return linesToBeWritten
+
+
+def GenTxBlock(p, q, g, count):
+    fullTransaction = ''
+    for x in xrange(0, count):
+        fullTransaction += GenTxBlockHelper(p, q, g, count)
+    return fullTransaction
+
+
+def findDefDir():
+    return os.getcwdu()
+
+
+def findDSAParams():
+    dirDef = findDefDir()
+    try:
+        os.chdir(dirDef + "/Outputs")
+        fo = open('DSA_params.txt', "r")
+        q = int(fo.readline())
+        p = int(fo.readline())
+        g = int(fo.readline())
+        fo.close()
+    except Exception as e:
+        raise e
+    return p, q, g
 
 
 # =====================================
 # Initials
 # =====================================
-p = 17351983516261975648113385581266572836621011405117583846037979511380811939830048934780621250536648185672840475037299501264766387569203495153324771788266333636854131383988274243726185478263765834984294566269169178696290419349061809898420356756153280222649806973169814324994850185150955224768699832827448630061135257960026309534156029947200573713906627586466766028692386348962032321825103044645565707058177743696876734802560163615076739360410163972059112243810722146947219335882787939549439144992468843526649495056263722663634385038621840115309016335081011694913359494732892407193690773339221126452085915098113392913791
-q = 63325846525215223451623834564327759119833219123142291259906278754839511327823
-g = 15815110434627282460574940400335306298803808243612631802256240593739305038321083230357382274958030593037632451697670023157571703689110971837076707417736861355553912736400413841844134664777587110092607931735838503761895231425739076205716637903868654445504209548026030808121993946515586903222474696663353686225546899739126596996338005397248489243704649659157599108109329093233831143287407189442512731842367939937005653778328417434583354755404308584270686573681542062249195791195920620131812887994418247331895128093004520184552098950557809765371922967034696976881485449605479336205639680473116404692121120179217202852796
-message = "lalalala"
+message = "Special message for Eylul."
+lenAmount = 3  # Number of digits of transactions
+lenTxBlock = 8  # Number of transaction information in each file
+numberOfFiles = 3  # Number of files containing transaction information
 
 # =====================================
 # Main
 # =====================================
+
+
 def main():
-    pass
+    p, q, g = findDSAParams()
+    # print GenTxBlock(p, q, g, lenTxBlock)  # Debug
+    # print tHelp.generateSerialNum()
+    for x in xrange(0, numberOfFiles):
+        fName = 'TransactionBlock' + str(x) + '.txt'
+        tHelp.writeToFile(GenTxBlock(p, q, g, lenTxBlock), fName)
+
 
 if __name__ == "__main__":
     main()
