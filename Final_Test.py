@@ -19,8 +19,8 @@ LinkLen = 4    # no of lines in a link of the chain (do not change)
 
 # Generate a random transaction along with its signature
 if TxBlocksGenOn:
-    if os.path.exists('DSA_params.txt') == True:
-        inf = open('DSA_params.txt', 'r')
+    if os.path.exists('Outputs/DSA_params.txt') == True:
+        inf = open('Outputs/DSA_params.txt', 'r')
         q = int(inf.readline())
         p = int(inf.readline())
         g = int(inf.readline())
@@ -30,7 +30,7 @@ if TxBlocksGenOn:
         print 'DSA_params.txt does not exist'
         sys.exit()
     
-    FileName = "TransactionBlock"
+    FileName = "Outputs/TransactionBlock"
     for i in range(0,blockCount):
         transaction=TxBlockGen.GenTxBlock(p, q, g, TxCount)
         TxBlockFileName = FileName+str(i)+".txt"
@@ -55,7 +55,7 @@ if PoWGenOn:
 
 # Validate the block chain
 if BlockChainTestOn:
-    BlockChainFileName = "LongestChain.txt"
+    BlockChainFileName = "Outputs/LongestChain.txt"
     if os.path.exists(BlockChainFileName) == True:
         BlockChainFile = open(BlockChainFileName, "r")
         blocks = BlockChainFile.readlines()
@@ -99,7 +99,7 @@ if ValidateTxOn:
     print "Transaction no: ", txNo
 
     # open the transaction block file blockNo and read all transactions in it
-    TxBlockFileName = "TransactionBlock"+str(blockNo)+".txt"
+    TxBlockFileName = "Outputs/TransactionBlock"+str(blockNo)+".txt"
     if os.path.exists(TxBlockFileName) == False:
         print "Error: ", TxBlockFileName, "does not exist"
         sys.exit()
@@ -111,6 +111,7 @@ if ValidateTxOn:
     # read the transaction txNo from the file and verify its signature
     transaction = lines[txNo*TxLen:(txNo+1)*TxLen]
     SignedPart = "".join(transaction[0:TxLen-2])
+    # print repr(SignedPart)
     p = int(transaction[2][3:])
     q = int(transaction[3][3:])
     g = int(transaction[4][3:])
@@ -125,7 +126,7 @@ if ValidateTxOn:
     # Check if the transaction really belongs to that block
     # using "LongestChain.txt file"
     # The method is hash tree
-    BlockChainFileName = "LongestChain.txt"
+    BlockChainFileName = "Outputs/LongestChain.txt"
     if os.path.exists(BlockChainFileName) == False:
         print "Error: ", BlockChainFileName, "does not exist"
         sys.exit()
