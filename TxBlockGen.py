@@ -10,25 +10,20 @@
 # Info
 # =====================================
 '''
-Random explanation
+Creates imaginary signed Bitcoin transactions and
+write them on a number of file(s).
 
+Requires custom python modules:
+    */DSA.py
+    */library/transactionHelpers.py
+
+Functions
+    GenTxBlockHelper(p, q, g): Returns a single transaction info.
+    GenTxBlock(p, q, g, count): Returns 'count' number of transaction info.
+    findDSAParams(): Finds and returns already created DSA initial params
+        p, q, g.
 '''
 
-# =====================================
-# Workload
-# =====================================
-'''
-*** Bitcoin transaction ***
-Serial number: 129986701613722743128838545549399553824
-p: 12376337094338799430773844124977509457217066353 ...
-q: 45342338499442214089108938181222870730317855769999072394177227217388872148783
-g: 875874273754043385544666877683999314698918600107797140 ...
-Payer Public Key (beta): 1064795504184295781499096314130136074379661237724834 ...
-Payee Public Key (beta): 1640914200063307349695701322479808357127910275781041 ...
-Amount: 905 Satoshi
-Signature (r): 66067765116041166658524374136414953666714993823918402058876243 ...
-Signature (s): 54222466157856912512740736834055670138544475519297459412760616 ...
-'''
 
 # =====================================
 # Libraries
@@ -36,12 +31,36 @@ Signature (s): 54222466157856912512740736834055670138544475519297459412760616 ..
 import DSA
 from library import transactionHelpers as TxLib
 
+
 # =====================================
 # Functions
 # =====================================
+def GenTxBlockHelper(p, q, g):
+    '''
+    Takes initial DSA parameters, generates random bitcoin transaction info.
+    Generates keys for payer and payee. Signs transaction info with payers key.
+    Then combines every public parameter into a string.
 
+    Inputs
+    p: DSA parameter. Numeric value
+    q: DSA parameter. Numeric value
+    g: DSA parameter. Numeric value
 
-def GenTxBlockHelper(p, q, g, count):
+    Output
+    Single bitcoin transaction information as string.
+
+    Output Example
+    *** Bitcoin transaction ***
+    Serial number: 129986701613722743128838545549399553824
+    p: 12376337094338799430773844124977509457217066353 ...
+    q: 453423384994422140891089381812228707303 ...
+    g: 87587427375404338554466687768399931469891860010 ...
+    Payer Public Key (beta): 1064795504184295781499096314130136074379661237 ...
+    Payee Public Key (beta): 1640914200063307349695701322479808357127910275 ...
+    Amount: 905 Satoshi
+    Signature (r): 66067765116041166658524374136414953666714993823918402053 ...
+    Signature (s): 54222466157856912512740736834055670138544475519292760616 ...
+    '''
     # Key Generation phase
     (alpha1, beta1) = DSA.KeyGen(p, q, g)  # Keys of payer
     (alpha2, beta2) = DSA.KeyGen(p, q, g)  # Keys of payee
@@ -69,13 +88,39 @@ def GenTxBlockHelper(p, q, g, count):
 
 
 def GenTxBlock(p, q, g, count):
+    '''
+    Takes 4 parameters. Returns a transaction block as a string.
+    Look to GenTxBlockHelper function for more details.
+
+    Inputs
+    p: DSA parameter. Numeric value
+    q: DSA parameter. Numeric value
+    g: DSA parameter. Numeric value
+    count: Number of transactions in transaction block. Integer
+        This number must be power of 2.
+
+    Output
+    'Count' number of transaction info as a string.
+    '''
     fullTransaction = ''
     for x in xrange(0, count):
-        fullTransaction += GenTxBlockHelper(p, q, g, count)
+        fullTransaction += GenTxBlockHelper(p, q, g)
     return fullTransaction.rstrip()
 
 
 def findDSAParams():
+    '''
+    Takes no parameter.
+    Returns initial DSA parameters, namely p, q, g.
+
+    Input
+    None
+
+    Outputs
+    p: DSA parameter. Numeric value
+    q: DSA parameter. Numeric value
+    g: DSA parameter. Numeric value
+    '''
     dirDef = TxLib.findDefDir()
     try:
         dirFile = dirDef + "/Outputs/"
@@ -92,9 +137,9 @@ def findDSAParams():
 # =====================================
 # Initials
 # =====================================
-lenAmount = 3  # Number of digits of transactions
-lenTxBlock = 8  # Number of transaction information in each file
-numberOfFiles = 3  # Number of files containing transaction information
+lenAmount = 3       # Number of digits of transactions
+NumOfTxBlock = 8    # Number of transaction information in each file
+numberOfFiles = 3   # Number of files containing transaction information
 
 
 # =====================================
@@ -102,11 +147,11 @@ numberOfFiles = 3  # Number of files containing transaction information
 # =====================================
 def main():
     p, q, g = findDSAParams()
-    # print GenTxBlock(p, q, g, lenTxBlock)  # Debug
+    # print GenTxBlock(p, q, g, NumOfTxBlock)  # Debug
     # print TxLib.generateSerialNum()
     for x in xrange(0, numberOfFiles):
         fName = 'TransactionBlock' + str(x) + '.txt'
-        TxLib.writeToFile(GenTxBlock(p, q, g, lenTxBlock), fName)
+        TxLib.writeToFile(GenTxBlock(p, q, g, NumOfTxBlock), fName)
 
 
 if __name__ == "__main__":
