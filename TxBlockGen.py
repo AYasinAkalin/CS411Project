@@ -34,8 +34,7 @@ Signature (s): 54222466157856912512740736834055670138544475519297459412760616 ..
 # Libraries
 # =====================================
 import DSA
-import os
-from library import transactionHelpers as tHelp
+from library import transactionHelpers as TxLib
 
 # =====================================
 # Functions
@@ -51,13 +50,13 @@ def GenTxBlockHelper(p, q, g, count):
 
     # Output string generation
     header = '*** Bitcoin transaction ***'
-    serial = tHelp.generateSerialNum()
+    serial = TxLib.generateSerialNum()
     p_ = 'p: ' + str(p)
     q_ = 'q: ' + str(q)
     g_ = 'g: ' + str(g)
     beta1 = 'Payer Public Key (beta): ' + str(beta1)
     beta2 = 'Payee Public Key (beta): ' + str(beta2)
-    amount = tHelp.generateAmount(lenAmount)
+    amount = TxLib.generateAmount(lenAmount)
     r_ = 'Signature (r): ' + str(sign1[0])  # Signature element of payer
     s_ = 'Signature (s): ' + str(sign1[1])  # Signature element of payer
     linesToBeWritten = '\n'.join(
@@ -69,18 +68,14 @@ def GenTxBlock(p, q, g, count):
     fullTransaction = ''
     for x in xrange(0, count):
         fullTransaction += GenTxBlockHelper(p, q, g, count)
-    return fullTransaction
-
-
-def findDefDir():
-    return os.getcwdu()
+    return fullTransaction.rstrip()
 
 
 def findDSAParams():
-    dirDef = findDefDir()
+    dirDef = TxLib.findDefDir()
     try:
-        os.chdir(dirDef + "/Outputs")
-        fo = open('DSA_params.txt', "r")
+        dirFile = dirDef + "/Outputs/"
+        fo = open(dirFile + 'DSA_params.txt', "r")
         q = int(fo.readline())
         p = int(fo.readline())
         g = int(fo.readline())
@@ -106,10 +101,10 @@ numberOfFiles = 3  # Number of files containing transaction information
 def main():
     p, q, g = findDSAParams()
     # print GenTxBlock(p, q, g, lenTxBlock)  # Debug
-    # print tHelp.generateSerialNum()
+    # print TxLib.generateSerialNum()
     for x in xrange(0, numberOfFiles):
         fName = 'TransactionBlock' + str(x) + '.txt'
-        tHelp.writeToFile(GenTxBlock(p, q, g, lenTxBlock), fName)
+        TxLib.writeToFile(GenTxBlock(p, q, g, lenTxBlock), fName)
 
 
 if __name__ == "__main__":
