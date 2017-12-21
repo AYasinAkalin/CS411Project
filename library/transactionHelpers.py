@@ -27,41 +27,72 @@ def findDefDir():
 
 # Takes no parameter
 # Returns 'string'
-def generateSerialNum():
+def generateSerialNum(plainOutput=False):
+    if plainOutput:
+        return str(RandomGenerator.randomIntegerNbit(128))
     return 'Serial number: ' + str(RandomGenerator.randomIntegerNbit(128))
 
 
 # Takes one 'int'
 # Returns 'string'
-def generateAmount(numOfDigits):
+def generateAmount(numOfDigits=3, plainOutput=False):
     # Usage
     # print generateAmount(3)
+    if plainOutput:
+        return str(RandomGenerator.randomIntegerNDigits(numOfDigits))
     return 'Amount: ' \
-    + str(RandomGenerator.randomIntegerNDigits(numOfDigits)) \
-    + ' Satoshi'
+        + str(RandomGenerator.randomIntegerNDigits(numOfDigits)) \
+        + ' Satoshi'
 
 
-def writeToFile(string, fileName):
-    dirMain = findDefDir()
-    dirFile = dirMain + '/Outputs/'
+# Takes no parameter
+# Returns 'string'
+def generateNonce(plainOutput=False):
+    if plainOutput:
+        return str(RandomGenerator.randomIntegerNbit(128))
+    return 'Nonce: ' + str(RandomGenerator.randomIntegerNbit(128))
 
-    # Find if folder is present, otherwise create the folder
+
+def writeToFile(inpt, fileName, override=False):
+    dirDefault = findDefDir()
+    dirFile = dirDefault + IOFolderDir
+
+    # Find if the folder is present, otherwise create the folder
     try:
         os.stat(dirFile)
-    except:
-        os.mkdir(dirFile)   
-    
+    except Exception:
+        os.mkdir(dirFile)
+
     # Open a file
-    fo = open(dirFile + fileName, "a")  # File opens in append mode
+    if override:
+        fo = open(dirFile + '/' + fileName, "w")  # File opens in write mode
+    else:
+        fo = open(dirFile + '/' + fileName, "a")  # File opens in append mode
     # Fill the text into the file
-    fo.write(string)
+    fo.write(inpt)
     fo.write('\n')
     # Close opened file
     fo.close()
 
+
+def readInputFile(fileName):
+    dirDefault = findDefDir()
+    try:
+        dirFile = dirDefault + IOFolderDir + '/' + fileName
+        fo = open(dirFile, "r")
+        fileContent = fo.readlines()
+        fo.close()
+    except Exception as e:
+        raise e
+        return None
+    return fileContent
+
+
 # =====================================
 # Initials
 # =====================================
+IOFolderDir = '/Outputs'
+
 
 # =====================================
 # Main
