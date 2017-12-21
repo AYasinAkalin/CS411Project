@@ -42,25 +42,29 @@ from library import transactionHelpers as TxLib
 
 
 def GenTxBlockHelper(p, q, g, count):
-    # Generation phase
+    # Key Generation phase
     (alpha1, beta1) = DSA.KeyGen(p, q, g)  # Keys of payer
     (alpha2, beta2) = DSA.KeyGen(p, q, g)  # Keys of payee
-    sign1 = DSA.SignGen(message, p, q, g, alpha1, beta1)  # Signature of payer
-    sign2 = DSA.SignGen(message, p, q, g, alpha2, beta2)  # Signature of payee
 
-    # Output string generation
     header = '*** Bitcoin transaction ***'
     serial = TxLib.generateSerialNum()
     p_ = 'p: ' + str(p)
     q_ = 'q: ' + str(q)
     g_ = 'g: ' + str(g)
-    beta1 = 'Payer Public Key (beta): ' + str(beta1)
-    beta2 = 'Payee Public Key (beta): ' + str(beta2)
+    beta1_ = 'Payer Public Key (beta): ' + str(beta1)
+    beta2_ = 'Payee Public Key (beta): ' + str(beta2)
     amount = TxLib.generateAmount(lenAmount)
-    r_ = 'Signature (r): ' + str(sign1[0])  # Signature element of payer
-    s_ = 'Signature (s): ' + str(sign1[1])  # Signature element of payer
+    message = '\n'.join([
+        header, serial, p_, q_, g_, beta1_, beta2_, amount]) + '\n'
+
+    # Signature generation
+    sign = DSA.SignGen(message, p, q, g, alpha1, beta1)  # Signature of payer
+    r_ = 'Signature (r): ' + str(sign[0])  # Signature element of payer
+    s_ = 'Signature (s): ' + str(sign[1])  # Signature element of payer
+
+    # Output string generation
     linesToBeWritten = '\n'.join(
-        [header, serial, p_, q_, g_, beta1, beta2, amount, r_, s_]) + '\n'
+        [header, serial, p_, q_, g_, beta1_, beta2_, amount, r_, s_]) + '\n'
     return linesToBeWritten
 
 
@@ -88,16 +92,14 @@ def findDSAParams():
 # =====================================
 # Initials
 # =====================================
-message = "Special message for Eylul."
 lenAmount = 3  # Number of digits of transactions
 lenTxBlock = 8  # Number of transaction information in each file
 numberOfFiles = 3  # Number of files containing transaction information
 
+
 # =====================================
 # Main
 # =====================================
-
-
 def main():
     p, q, g = findDSAParams()
     # print GenTxBlock(p, q, g, lenTxBlock)  # Debug
