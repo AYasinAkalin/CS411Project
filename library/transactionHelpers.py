@@ -10,13 +10,10 @@
 # =====================================
 # Libraries
 # =====================================
-import random  # Used for random generators
-import string  # Used for alphabet generation
 import RandomGenerator
-from Crypto.Util import number  # Used to generate prime random numbers
-# More info is here: http://pythonhosted.org/pycrypto/
 import os
 import sys
+
 
 # =====================================
 # Functions
@@ -31,6 +28,28 @@ def generateSerialNum(plainOutput=False):
     if plainOutput:
         return str(RandomGenerator.randomIntegerNbit(128))
     return 'Serial number: ' + str(RandomGenerator.randomIntegerNbit(128))
+
+
+# Takes one 'int'
+# Returns 'string'
+def generatePayer(length, plainOutput=False):
+    # Usage
+    # print generatePayer(8)
+    if plainOutput:
+        return RandomGenerator.randomName(length)
+    else:
+        return 'Payer: ' + RandomGenerator.randomName(length)
+
+
+# Takes one 'int'
+# Returns 'string'
+def generatePayee(length, plainOutput=False):
+    # Usage
+    # print generatePayee(5)
+    if plainOutput:
+        return RandomGenerator.randomName(length)
+    else:
+        return 'Payee: ' + RandomGenerator.randomName(length)
 
 
 # Takes one 'int'
