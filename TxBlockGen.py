@@ -108,29 +108,24 @@ def GenTxBlock(p, q, g, count):
     return fullTransaction.rstrip()
 
 
-def findDSAParams():
+def findDSAParams(fileName='DSA_params.txt'):
     '''
-    Takes no parameter.
+    Takes a string parameter for file operation.
     Returns initial DSA parameters, namely p, q, g.
 
     Input
-    None
+    fileName: Name of the file containing q, p, g respectively inside.
+        Default is 'DSA_params.txt'
 
     Outputs
     p: DSA parameter. Numeric value
     q: DSA parameter. Numeric value
     g: DSA parameter. Numeric value
     '''
-    dirDef = TxLib.findDefDir()
-    try:
-        dirFile = dirDef + "/Outputs/"
-        fo = open(dirFile + 'DSA_params.txt', "r")
-        q = int(fo.readline())
-        p = int(fo.readline())
-        g = int(fo.readline())
-        fo.close()
-    except Exception as e:
-        raise e
+    content = TxLib.readInputFile(fileName)
+    q = int(content[0])
+    p = int(content[1])
+    g = int(content[2])
     return p, q, g
 
 
