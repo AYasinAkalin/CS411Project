@@ -29,7 +29,6 @@ Functions
 # Libraries
 # =====================================
 import DSA
-import sys
 from library import transactionHelpers as TxLib
 
 
@@ -142,7 +141,6 @@ numberOfFiles = 3   # Number of files containing transaction information
 # Main
 # =====================================
 def main():
-    print 'Path is:', sys.path[0]
     p, q, g = findDSAParams()
     # print GenTxBlock(p, q, g, NumOfTxBlock)  # Debug
     # print TxLib.generateSerialNum()

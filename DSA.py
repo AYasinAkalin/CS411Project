@@ -10,14 +10,6 @@
 # Info
 # =====================================
 '''
-Random explanation
-
-'''
-
-# =====================================
-# Workload
-# =====================================
-'''
 Generate prime number p, q; and a generator g. Write them in a .txt file.
 
 q is 256 bit integer.
@@ -42,30 +34,13 @@ import sys
 import hashlib
 if sys.version_info < (3, 6):
     import sha3
+from library import transactionHelpers as TxLib
+from library import RandomGenerator as RandLib
 
 
 # =====================================
 # Functions
 # =====================================
-# Takes 'integer'
-# Returns 'integer'
-def checkBitLength(n):
-    # Usage
-    # >>> checkBitLength(100)
-    # 7
-    return n.bit_length()
-
-
-def writeToFile(string, fileName):
-    # Open a file
-    fo = open(fileName, "a")  # File opens in append mode
-    # Fill the text into the file
-    fo.write(string)
-    fo.write('\n')
-    # Close opened file
-    fo.close()
-
-
 # Takes one number
 # Returns a 'long' number
 def generate_p(p_Len, q):
@@ -81,7 +56,7 @@ def generate_p(p_Len, q):
     while True:
         temp = number.getRandomNBitInteger(p_Len - q_Len)
         p = q * temp + 1
-        if number.isPrime(p) and checkBitLength(p) == p_Len:
+        if number.isPrime(p) and RandLib.checkBitLength(p) == p_Len:
             if (p - 1) % q == 0:
                 break
     print 'Found one!'
@@ -100,7 +75,7 @@ def generate_q(q_Len):
     while True:
         q = number.getPrime(q_Len)
         print 'q generated'
-        if number.isPrime(q) and checkBitLength(q) == q_Len:
+        if number.isPrime(q) and RandLib.checkBitLength(q) == q_Len:
             break
     return q
 
@@ -182,6 +157,7 @@ q__ = 65551171644048854335181462879371743212664500566064056242121626458339348803
 p__ = 16884640886488047401237666558668516796981597367205419586509389007849824870829537040479464466870711267255932960020315339220349192484372157236061918158667506868940599327763363813731299460491316503345869876259583550985332605841551186324345197600803782071574244669010466971446641141400285718866808680561360384647685888723498410943657808897136004654359916711019879363413031007210057289416821000345567956231423296177708071149758425889248762916065060677665260237247585588806641263947576457518507588399642291825208334646045307980743638188901898032068685409150584091095330775211678303390226107718670997737265833806564263277147
 m = 'Special message for Eylul.'
 
+
 # =====================================
 # Main
 # =====================================
@@ -189,20 +165,21 @@ def main():
     q, p, g = DL_Param_Generator(bitLen_q, bitLen_p)
     # Print DSA_params.txt file
     lines = '\n'.join([str(q), str(p), str(g)])
-    writeToFile(lines, outputFiles[0])
+    TxLib.writeToFile(lines, outputFiles[0])
+    # writeToFile(lines, outputFiles[0])
 
     (alpha, beta) = KeyGen(p, q, g)
     # Print DSA_pkey.txt file
     lines = '\n'.join([str(q), str(p), str(g), str(beta)])
-    writeToFile(lines, outputFiles[1])
+    TxLib.writeToFile(lines, outputFiles[1])
     # Print DSA_skey.txt file
     lines = '\n'.join([str(q), str(p), str(g), str(alpha)])
-    writeToFile(lines, outputFiles[2])
+    TxLib.writeToFile(lines, outputFiles[2])
     (r, s) = SignGen(m, p, q, g, alpha, beta)
 
     # print SignVer(m, p, q, g, r, s, beta)
     SignVer(m, r, s, p, q, g, beta)
-    
+
     initialParameters = [p, q, g, alpha ,beta]
     publicParameters = [p, q, g, beta, r, s]
     secretParameters = [alpha]
