@@ -6,9 +6,13 @@ import pyprimes
 import hashlib
 import DSA, TxBlockGen, PoW
 
-TxBlocksGenOn = 0    # set to 1 if you want to generate a block of bitcoin transaction
-PoWGenOn = 0         # set to 1 if you want to provide PoW for given transaction blocks
-BlockChainTestOn = 0 # set ot 1 if you want to validate the block chain
+RootDir = sys.path[0]
+IOFolder = RootDir + '/Outputs'
+os.chdir(IOFolder)
+
+TxBlocksGenOn = 1    # set to 1 if you want to generate a block of bitcoin transaction
+PoWGenOn = 1         # set to 1 if you want to provide PoW for given transaction blocks
+BlockChainTestOn = 1 # set ot 1 if you want to validate the block chain
 ValidateTxOn = 1     # set to 1 if you want to validate a transaction 
 
 blockCount = 3 # number of link in the block chain (you can change)
@@ -19,8 +23,8 @@ LinkLen = 4    # no of lines in a link of the chain (do not change)
 
 # Generate a random transaction along with its signature
 if TxBlocksGenOn:
-    if os.path.exists('Outputs/DSA_params.txt') == True:
-        inf = open('Outputs/DSA_params.txt', 'r')
+    if os.path.exists('DSA_params.txt') == True:
+        inf = open('DSA_params.txt', 'r')
         q = int(inf.readline())
         p = int(inf.readline())
         g = int(inf.readline())
@@ -30,7 +34,7 @@ if TxBlocksGenOn:
         print 'DSA_params.txt does not exist'
         sys.exit()
     
-    FileName = "Outputs/TransactionBlock"
+    FileName = "TransactionBlock"
     for i in range(0,blockCount):
         transaction=TxBlockGen.GenTxBlock(p, q, g, TxCount)
         TxBlockFileName = FileName+str(i)+".txt"
@@ -55,7 +59,7 @@ if PoWGenOn:
 
 # Validate the block chain
 if BlockChainTestOn:
-    BlockChainFileName = "Outputs/LongestChain.txt"
+    BlockChainFileName = "LongestChain.txt"
     if os.path.exists(BlockChainFileName) == True:
         BlockChainFile = open(BlockChainFileName, "r")
         blocks = BlockChainFile.readlines()
@@ -99,7 +103,7 @@ if ValidateTxOn:
     print "Transaction no: ", txNo
 
     # open the transaction block file blockNo and read all transactions in it
-    TxBlockFileName = "Outputs/TransactionBlock"+str(blockNo)+".txt"
+    TxBlockFileName = "TransactionBlock"+str(blockNo)+".txt"
     if os.path.exists(TxBlockFileName) == False:
         print "Error: ", TxBlockFileName, "does not exist"
         sys.exit()
@@ -126,7 +130,7 @@ if ValidateTxOn:
     # Check if the transaction really belongs to that block
     # using "LongestChain.txt file"
     # The method is hash tree
-    BlockChainFileName = "Outputs/LongestChain.txt"
+    BlockChainFileName = "LongestChain.txt"
     if os.path.exists(BlockChainFileName) == False:
         print "Error: ", BlockChainFileName, "does not exist"
         sys.exit()
@@ -158,3 +162,5 @@ if ValidateTxOn:
         print "Transaction belongs to block number ", blockNo, ":))"
     
     BlockChainFile.close()
+
+os.chdir(RootDir)

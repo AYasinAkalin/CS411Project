@@ -6,6 +6,10 @@ import pyprimes
 import hashlib
 import DSA, TxGen
 
+RootDir = sys.path[0]
+IOFolder = RootDir + '/Outputs'
+os.chdir(IOFolder)
+
 def random_string(size=6, chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for x in range(size))
 
@@ -245,3 +249,5 @@ if TxTestOn:
     else:
         print 'SingleTransaction.txt does not exist'
         sys.exit()
+
+os.chdir(RootDir)
